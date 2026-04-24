@@ -28,6 +28,8 @@ class MemoryStore:
         "travel",
         "call",
     )
+    QUESTION_HINTS = ("what", "when", "where", "who", "why", "how", "?")
+    EXPLICIT_SAVE_HINTS = ("remember", "note", "important", "save this")
 
     def __init__(self, storage_path: str = "data/memory.json") -> None:
         self.storage_path = Path(storage_path)
@@ -47,7 +49,12 @@ class MemoryStore:
 
     def maybe_store(self, user_text: str) -> bool:
         lower = user_text.lower()
-        if not any(keyword in lower for keyword in self.KEYWORDS):
+        if any(hint in lower for hint in self.QUESTION_HINTS):
+            return False
+
+        has_keyword = any(keyword in lower for keyword in self.KEYWORDS)
+        has_explicit_save_intent = any(hint in lower for hint in self.EXPLICIT_SAVE_HINTS)
+        if not (has_keyword and has_explicit_save_intent):
             return False
 
         entries = self._read_memories()

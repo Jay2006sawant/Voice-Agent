@@ -149,6 +149,16 @@ class VoiceTodoAgent:
                     result = tool_fn(**arguments)
                 tool_results.append(result)
 
+            tool_messages = []
+            for tool_call, result in zip(message.tool_calls, tool_results):
+                tool_messages.append(
+                    {
+                        "role": "tool",
+                        "tool_call_id": tool_call.id,
+                        "content": result,
+                    }
+                )
+
             follow_up = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
@@ -158,11 +168,7 @@ class VoiceTodoAgent:
                         "content": message.content or "",
                         "tool_calls": message.tool_calls,
                     },
-                    {
-                        "role": "tool",
-                        "tool_call_id": message.tool_calls[-1].id,
-                        "content": "\n".join(tool_results),
-                    },
+                    *tool_messages,
                 ],
             )
             return follow_up.choices[0].message.content or "Done."

@@ -34,7 +34,8 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-If `PyAudio` fails to install on Linux, install system packages first:
+Microphone support requires `PyAudio`, which is optional if you only need typed input mode.
+Install it on Linux with:
 
 ```bash
 sudo apt-get update
