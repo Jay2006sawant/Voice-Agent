@@ -48,6 +48,26 @@ sudo apt-get install -y portaudio19-dev python3-pyaudio
 python main.py
 ```
 
+### Change the agent voice
+
+List available local voices:
+
+```bash
+python main.py --list-voices
+```
+
+Use a specific voice:
+
+```bash
+python main.py --voice-name english --rate 155 --volume 1.0
+```
+
+Or by exact voice id:
+
+```bash
+python main.py --voice-id "english-us" --rate 160
+```
+
 ### Example voice commands
 
 - "Add task prepare assignment video"
@@ -81,10 +101,3 @@ pytest -q
 - Prompt + function calling: in `VoiceTodoAgent.SYSTEM_PROMPT` and `_process_with_openai`
 - Code structure: modular components for voice, tools, memory, and agent
 
-## Demo Video Checklist (6-10 min)
-
-- Show your face and screen
-- Start app and issue voice commands
-- Demonstrate all 4 CRUD operations
-- Demonstrate memory save + recall
-- Briefly explain project structure and prompt logic
